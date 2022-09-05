@@ -45,8 +45,8 @@ public class MemberFacade {
     /**
      * 이메일 인증번호 전송
      */
-    public void authEmail(EmailRequest emailRequest) {
-        memberService.authEmail(emailRequest);
+    public String authEmail(EmailRequest emailRequest) {
+        return memberService.authEmail(emailRequest);
     }
 
     public Member toEntity(MemberFormDto memberFormDto, Address address, MemberRole role) {

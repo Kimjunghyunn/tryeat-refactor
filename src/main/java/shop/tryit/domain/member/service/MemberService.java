@@ -55,11 +55,12 @@ public class MemberService {
      * 이메일 인증번호 전송
      */
     @Transactional
-    public void authEmail(EmailRequest emailRequest) {
+    public String authEmail(EmailRequest emailRequest) {
         Random random = new Random();
         String authKey = String.valueOf(random.nextInt(888888) + 111111); // 범위 : 111111 ~ 999999
 
         sendAuthEmail(emailRequest.getEmail(), authKey);
+        return authKey;
     }
 
     /**
