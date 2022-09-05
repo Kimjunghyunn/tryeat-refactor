@@ -3,6 +3,7 @@ package shop.tryit.web.member;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -63,10 +64,10 @@ public class MemberController {
      * 이메일 전송
      */
     @PostMapping("/email")
-    public ResponseEntity<Void> authEmail(@RequestBody @Valid EmailRequest emailRequest) {
-        memberFacade.authEmail(emailRequest);
-        //성공했다면 200
-        return ResponseEntity.ok().build();
+    public ResponseEntity<String> authEmail(@RequestBody @Valid EmailRequest emailRequest) {
+        String authKey = memberFacade.authEmail(emailRequest);
+        //성공했다면 인증번호와 함께 200 통신
+        return new ResponseEntity<>(authKey, HttpStatus.OK);
     }
 
 
