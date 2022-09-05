@@ -92,6 +92,8 @@
             <td>
               <input class="table_input" type="email" th:field="*{email}" placeholder="ex) abcdef1234@gmail.com">
               <div class="field-error" th:errors="*{email}"></div>
+              <input class="table_input width70" type="text" placeholder="인증번호를 입력해주세요">
+              <input class="table_input width30" type="button" value="인증번호 발송"/>
             </td>
           </tr>
           <tr>
@@ -118,9 +120,9 @@
           <tr>
             <th><span>주소</span></th>
             <td>
-              <input class="table_input zipcode" type="text" th:field="*{zipcode}" id="zipcode" placeholder="우편번호" readonly>
+              <input class="table_input width100px" type="text" th:field="*{zipcode}" id="zipcode" placeholder="우편번호" readonly>
               <div class="field-error" th:errors="*{zipcode}"></div>
-              <input class="table_input zipcode" type="button" onclick='execDaumPostcode()' value="우편번호 찾기"><br>
+              <input class="table_input width100px" type="button" onclick='execDaumPostcode()' value="우편번호 찾기"><br>
               <input class="table_input" type="text" th:field="*{street_address}" id="street_address" placeholder="도로명주소" readonly>
               <div class="field-error" th:errors="*{street_address}"></div>
               <input class="table_input" type="text" th:field="*{jibeon_address}" id="jibeon_address" placeholder="지번주소" readonly>
