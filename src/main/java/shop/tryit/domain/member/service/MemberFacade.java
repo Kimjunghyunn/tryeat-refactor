@@ -3,6 +3,7 @@ package shop.tryit.domain.member.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+import shop.tryit.domain.member.dto.EmailRequest;
 import shop.tryit.domain.member.dto.MemberFormDto;
 import shop.tryit.domain.member.entity.Address;
 import shop.tryit.domain.member.entity.Member;
@@ -39,6 +40,13 @@ public class MemberFacade {
         Address address = toAddress(memberForm);
         Member member = toEntity(memberForm, address);
         return memberService.update(member.getEmail(), member);
+    }
+
+    /**
+     * 이메일 인증번호 전송
+     */
+    public String authEmail(EmailRequest emailRequest) {
+        return memberService.authEmail(emailRequest);
     }
 
     public Member toEntity(MemberFormDto memberFormDto, Address address, MemberRole role) {
@@ -82,5 +90,4 @@ public class MemberFacade {
                 .detail_address(member.getAddress().getDetail_address())
                 .build();
     }
-
 }

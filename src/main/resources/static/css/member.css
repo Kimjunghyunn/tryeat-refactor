@@ -31,7 +31,7 @@
   width: 100%;
 }
 
-.join_form table input {
+/*.join_form table input {
   border: 1px solid #ececec;
   font-size: 14px;
   color: #4c4c4c;
@@ -39,6 +39,26 @@
   padding: 10px;
   width: 100%;
   float: left;
+}*/
+
+.table_input {
+  border: 1px solid #ececec;
+  font-size: 14px;
+  color: #4c4c4c;
+  height: 35px;
+  padding: 10px;
+  width: 100%;
+  float: left;
+}
+
+.width70 {
+  width: 70%;
+}
+.width30 {
+  width: 30%;
+}
+.width100px {
+  width: 100px;
 }
 
 .join_form table input.send_number {
@@ -131,13 +151,31 @@
   .join_form table {
     width: 100%;
   }
-  .join_form table input {
+/*  .join_form table input {
     border: 1px solid #ececec;
     font-size: 14px;
     color: #4c4c4c;
     height: 37px;
     padding: 10px;
     width: 100%;
+  }*/
+  .table_input {
+    border: 1px solid #ececec;
+    font-size: 14px;
+    color: #4c4c4c;
+    height: 35px;
+    padding: 10px;
+    width: 100%;
+    float: left;
+  }
+  .width70 {
+    width: 70%;
+  }
+  .width30 {
+    width: 30%;
+  }
+  .width100px {
+    width: 100px;
   }
   .join_form table input.email {
     width: 30%;
