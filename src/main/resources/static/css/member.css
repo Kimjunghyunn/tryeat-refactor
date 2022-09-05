@@ -51,7 +51,13 @@
   float: left;
 }
 
-.zipcode {
+.width70 {
+  width: 70%;
+}
+.width30 {
+  width: 30%;
+}
+.width100px {
   width: 100px;
 }
 
@@ -162,7 +168,13 @@
     width: 100%;
     float: left;
   }
-  .zipcode {
+  .width70 {
+    width: 70%;
+  }
+  .width30 {
+    width: 30%;
+  }
+  .width100px {
     width: 100px;
   }
   .join_form table input.email {
