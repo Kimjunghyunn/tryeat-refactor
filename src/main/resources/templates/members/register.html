@@ -97,8 +97,8 @@
           </tr>
           <tr>
             <td>
-              <input class="table_input width70" type="text" placeholder="인증번호를 입력해주세요">
-              <input class="table_input width30" type="button" value="인증번호 확인"/>
+              <input id="authNum" class="table_input width70" type="text" placeholder="인증번호를 입력해주세요">
+              <input id="check_authNum" class="table_input width30" type="button" value="인증번호 확인"/>
             </td>
           </tr>
 
@@ -162,6 +162,8 @@
 
 <script th:inline="javascript">
   /** ====== Email Auth ====== **/
+  let resultAuthNum = 0; //인증번호 저장 전역변수
+
   $("#check_email").click(function () {
     let email = $("#email").val();
     let data = {
@@ -174,8 +176,10 @@
       url    : "/members/email",
       contentType: 'application/json',
       data   : JSON.stringify(data),
-      success: function(result) {
-        let msg = '인증번호가 발송되었습니다.';
+      success: function onData (result) {
+        console.log(result);
+        resultAuthNum = result
+        let msg = '📩 인증번호가 발송되었습니다.' + /n;
         msg += '이메일을 확인해주세요.';
         alert(msg);
       },
@@ -183,6 +187,14 @@
         alert(jqXHR.responseText);
       }
     });
+  });
+
+  $("#check_authNum").click(function () {
+    if(resultAuthNum == $("#authNum").val()){
+      alert("이메일 인증이 완료되었습니다 😊");
+    } else {
+      alert("인증번호가 일치 하지 않습니다. 다시 입력해주세요.");
+    }
   });
 
 </script>
