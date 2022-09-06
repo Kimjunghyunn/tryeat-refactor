@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -65,11 +66,11 @@ public class MemberController {
      */
     @PostMapping("/email")
     public ResponseEntity<String> authEmail(@RequestBody @Valid EmailRequest emailRequest) {
+        log.info("member email controller");
         String authKey = memberFacade.authEmail(emailRequest);
         //성공했다면 인증번호와 함께 200 통신
         return new ResponseEntity<>(authKey, HttpStatus.OK);
     }
-
 
     /**
      * 로그인
