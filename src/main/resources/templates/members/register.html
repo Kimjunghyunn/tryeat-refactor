@@ -88,14 +88,20 @@
           </colgroup>
           <tbody>
           <tr>
-            <th><span>아이디</span></th>
+            <th rowspan="2"><span>아이디</span></th>
             <td>
-              <input class="table_input" type="email" th:field="*{email}" placeholder="ex) abcdef1234@gmail.com">
+              <input class="table_input width70" type="email" id="email" th:field="*{email}" placeholder="ex) abcdef1234@gmail.com">
+              <input id="check_email" class="table_input width30" type="button" value="인증번호 발송"/>
               <div class="field-error" th:errors="*{email}"></div>
-              <input class="table_input width70" type="text" placeholder="인증번호를 입력해주세요">
-              <input class="table_input width30" type="button" value="인증번호 발송"/>
             </td>
           </tr>
+          <tr>
+            <td>
+              <input class="table_input width70" type="text" placeholder="인증번호를 입력해주세요">
+              <input class="table_input width30" type="button" value="인증번호 확인"/>
+            </td>
+          </tr>
+
           <tr>
             <th><span>이름</span></th>
             <td>
@@ -153,5 +159,32 @@
 
 <!-- ======= Footer ======= -->
 <footer th:replace="fragments/footer :: footer" id="footer"></footer>
+
+<script th:inline="javascript">
+  /** ====== Email Auth ====== **/
+  $("#check_email").click(function () {
+    let email = $("#email").val();
+    let data = {
+      email : email
+    };
+    console.log(data);
+
+    $.ajax({
+      type   : "POST",
+      url    : "/members/email",
+      contentType: 'application/json',
+      data   : JSON.stringify(data),
+      success: function(result) {
+        let msg = '인증번호가 발송되었습니다.';
+        msg += '이메일을 확인해주세요.';
+        alert(msg);
+      },
+      error  : function(jqXHR) {
+        alert(jqXHR.responseText);
+      }
+    });
+  });
+
+</script>
 </body>
 </html>
