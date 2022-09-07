@@ -49,6 +49,11 @@ public class MemberController {
                     "비밀번호가 일치하지 않습니다.");
         }
 
+        if (!memberForm.isEmailAuth()){
+            bindingResult.rejectValue("emailAuth", "emailAuthInCorrect",
+                    "인증번호을 확인해주세요.");
+        }
+
         if (bindingResult.hasErrors()) {
             log.info("member controller post");
 

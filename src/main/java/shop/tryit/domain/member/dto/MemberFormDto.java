@@ -45,6 +45,8 @@ public class MemberFormDto {
 
     private boolean admin = false;
 
+    private boolean emailAuth = false;
+
     @Builder
     public MemberFormDto(String name, String email,
                          String password1, String password2,
