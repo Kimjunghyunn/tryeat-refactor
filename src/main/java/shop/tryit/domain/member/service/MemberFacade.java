@@ -3,6 +3,7 @@ package shop.tryit.domain.member.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import shop.tryit.domain.member.dto.EmailRequest;
 import shop.tryit.domain.member.dto.MemberFormDto;
 import shop.tryit.domain.member.entity.Address;
@@ -11,12 +12,14 @@ import shop.tryit.domain.member.entity.MemberRole;
 
 @Component
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MemberFacade {
     private final MemberService memberService;
 
     /**
      * 회원 가입
      */
+    @Transactional
     public Long register(MemberFormDto memberForm) {
         MemberRole role = MemberRole.USER;
         Address address = toAddress(memberForm);
@@ -36,6 +39,7 @@ public class MemberFacade {
     /**
      * 회원 수정 업데이트
      */
+    @Transactional
     public String update(MemberFormDto memberForm) {
         Address address = toAddress(memberForm);
         Member member = toEntity(memberForm, address);
@@ -47,6 +51,15 @@ public class MemberFacade {
      */
     public String authEmail(EmailRequest emailRequest) {
         return memberService.authEmail(emailRequest);
+    }
+
+    /**
+     * 회원 탈퇴(삭제)
+     */
+    @Transactional
+    public void delete(String email) {
+        Member member = memberService.findMember(email);
+        memberService.delete(member);
     }
 
     public Member toEntity(MemberFormDto memberFormDto, Address address, MemberRole role) {

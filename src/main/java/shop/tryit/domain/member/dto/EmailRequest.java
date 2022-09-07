@@ -9,6 +9,6 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class EmailRequest {
     @Email
-    @NotBlank(message = "이메일 인증은 필수입니다.")
+    @NotBlank(message = "이메일은 필수입니다.")
     private String email;
 }

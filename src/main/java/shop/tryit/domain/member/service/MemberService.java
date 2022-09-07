@@ -5,7 +5,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import shop.tryit.domain.member.dto.EmailRequest;
 import shop.tryit.domain.member.entity.Member;
 import shop.tryit.domain.member.repository.MemberRepository;
@@ -14,7 +13,6 @@ import javax.mail.internet.MimeMessage;
 import java.util.Random;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MemberService {
 
@@ -22,7 +20,6 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender javaMailSender;
 
-    @Transactional
     public Long saveMember(Member member) {
         validateDuplicateMember(member);
         String encodedPassword = passwordEncoder.encode(member.getPassword());
@@ -41,7 +38,6 @@ public class MemberService {
         }
     }
 
-    @Transactional
     public String update(String email, Member newMember) {
         Member findMember = findMember(email);
         String newEncodedPassword = passwordEncoder.encode(newMember.getPassword());
@@ -54,7 +50,6 @@ public class MemberService {
     /**
      * 이메일 인증번호 전송
      */
-    @Transactional
     public String authEmail(EmailRequest emailRequest) {
         Random random = new Random();
         String authKey = String.valueOf(random.nextInt(888888) + 111111); // 범위 : 111111 ~ 999999
@@ -82,4 +77,10 @@ public class MemberService {
         }
     }
 
+    /**
+     * 회원 탈퇴(삭제)
+     */
+    public void delete(Member member) {
+        repository.delete(member);
+    }
 }
