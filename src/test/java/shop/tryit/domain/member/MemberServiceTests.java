@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import shop.tryit.domain.member.entity.Member;
+import shop.tryit.domain.member.repository.MemberRepository;
 import shop.tryit.domain.member.service.MemberService;
 import shop.tryit.repository.member.MemberJpaRepository;
 
@@ -21,6 +22,9 @@ class MemberServiceTests {
 
     @Autowired
     private MemberJpaRepository memberJpaRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
 
     @Autowired
     private EntityManager entityManager;
@@ -92,6 +96,24 @@ class MemberServiceTests {
         assertThatThrownBy(() -> sut.findMember("test1234@gmail.com"))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("해당 회원을 찾을 수 없습니다.");
+    }
+
+    @Test
+    void 회원_탈퇴_테스트() {
+        //given
+        Member member1 = Member.builder()
+                .email("test1234@gmail.com")
+                .name("test")
+                .password("11111")
+                .build();
+
+        Member savedmember = memberJpaRepository.save(member1);
+
+        //when
+        sut.delete(member1);
+
+        //then
+        assertThat(memberRepository.findByEmail(savedmember.getEmail()).isPresent()).isFalse();
     }
 
 }
