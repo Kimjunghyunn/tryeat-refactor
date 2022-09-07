@@ -99,6 +99,7 @@
             <td>
               <input id="authNum" class="table_input width70" type="text" placeholder="인증번호를 입력해주세요">
               <input id="check_authNum" class="table_input width30" type="button" value="인증번호 확인"/>
+              <input id="authNum_tf" type="hidden" th:field="*{emailAuth}"/>
             </td>
           </tr>
 
@@ -192,6 +193,7 @@
   $("#check_authNum").click(function () {
     if(resultAuthNum == $("#authNum").val()){
       alert("이메일 인증이 완료되었습니다 😊");
+      $("#authNum_tf").val("true");
     } else {
       alert("인증번호가 일치 하지 않습니다. 다시 입력해주세요.");
     }
