@@ -21,6 +21,11 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
+    public void delete(Member member) {
+        jpaRepository.delete(member);
+    }
+
+    @Override
     public boolean existsByEmail(String email) {
         return jpaRepository.existsByEmail(email);
     }
