@@ -11,15 +11,19 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.util.UriComponentsBuilder;
 import shop.tryit.domain.member.dto.EmailRequest;
 import shop.tryit.domain.member.dto.MemberFormDto;
 import shop.tryit.domain.member.service.MemberFacade;
+import java.net.URI;
 
 @Slf4j
 @Controller
@@ -40,7 +44,7 @@ public class MemberController {
     }
 
     @PostMapping("/new")
-    public String newMember(@Valid @ModelAttribute("memberForm") MemberFormDto memberForm,
+    public ResponseEntity newMember(@Valid @ModelAttribute("memberForm") MemberFormDto memberForm,
                             BindingResult bindingResult) {
 
         if (!memberForm.getPassword1().equals(memberForm.getPassword2())) {
@@ -53,16 +57,27 @@ public class MemberController {
                     "인증번호을 확인해주세요.");
         }
 
+        // 검증 실패시 400
         if (bindingResult.hasErrors()) {
             log.info("member controller post");
+            StringBuilder sb = new StringBuilder();
 
-            return "members/register";
+            for (FieldError error : bindingResult.getFieldErrors())
+                sb.append(error.getDefaultMessage());
 
+            return new ResponseEntity<>(sb.toString(), HttpStatus.BAD_REQUEST);
         }
 
         memberFacade.register(memberForm);
 
-        return "redirect:/";
+        URI location = UriComponentsBuilder.newInstance()
+                .scheme("http")
+                .path("tryeat.shop")
+                .build()
+                .toUri();
+
+        // 성공 시 201
+        return ResponseEntity.created(location).build();
     }
 
     /**
@@ -80,7 +95,7 @@ public class MemberController {
      * 로그인
      */
     @GetMapping("/login")
-    public String login_form() {
+    public String loginForm() {
         log.info("member login controller");
 
         return "members/login-form";
@@ -100,8 +115,8 @@ public class MemberController {
 
     }
 
-    @PostMapping("/update")
-    public String editMember(@Valid @ModelAttribute("memberForm") MemberFormDto memberForm,
+    @PutMapping("/update")
+    public ResponseEntity editMember(@Valid @ModelAttribute("memberForm") MemberFormDto memberForm,
                              BindingResult bindingResult) {
         log.info("회원 수정으로 이동");
         if (!memberForm.getPassword1().equals(memberForm.getPassword2())) {
@@ -109,16 +124,27 @@ public class MemberController {
                     "비밀번호가 일치하지 않습니다.");
         }
 
+        // 검증 실패시 400
         if (bindingResult.hasErrors()) {
             log.info("member controller post");
+            StringBuilder sb = new StringBuilder();
 
-            return "members/update";
+            for (FieldError error : bindingResult.getFieldErrors())
+                sb.append(error.getDefaultMessage());
 
+            return new ResponseEntity<>(sb.toString(), HttpStatus.BAD_REQUEST);
         }
 
         memberFacade.update(memberForm);
 
-        return "members/update";
+        URI location = UriComponentsBuilder.newInstance()
+                .scheme("http")
+                .path("tryeat.shop/members/update")
+                .build()
+                .toUri();
+
+        // 성공 시 201
+        return ResponseEntity.created(location).build();
 
     }
 
