@@ -16,9 +16,9 @@
       <p>탈퇴 전 사전방지를 위해 동의를 받고 있습니다.</p>
       <p>아래의 버튼을 체크한 뒤 탈퇴를 진행해주세요.</p>
       <br>
-      <input type="checkbox"> 츄라잇을 탈퇴 하시겠습니까? </input>
+      <input id="del_checkbox" type="checkbox"> 츄라잇을 탈퇴 하시겠습니까? </input>
       <div class="btn_wrap">
-        <button class="btn btn-dark" type="submit">탈퇴하기</button>
+        <button id="del_btn" class="btn btn-dark" type="button">탈퇴하기</button>
       </div>
     </div>
   </div>
@@ -26,6 +26,28 @@
 
 <!-- ======= Footer ======= -->
 <footer th:replace="fragments/footer :: footer" id="footer"></footer>
-</body>
 
+<!-- ======= Js ======= -->
+<script>
+    $("#del_btn").click(function() {
+      if($('#del_checkbox').is(':checked')){
+        $.ajax({
+          type   : "DELETE",
+          url    : "/members/delete",
+          success: function (result) {
+            let msg = '🐕 츄라잇에 탈퇴 되었습니다. 🐈\n';
+            msg += '🐕 다음에 또 만나요 🐈';
+            alert(msg);
+            location.href='/members/logout';
+          },
+          error  : function(jqXHR) {
+            alert(jqXHR.responseText);
+          }
+        });
+      } else {
+        alert("‼ 체크박스에 동의해주세요 ‼");
+      }
+    });
+</script>
+</body>
 </html>
