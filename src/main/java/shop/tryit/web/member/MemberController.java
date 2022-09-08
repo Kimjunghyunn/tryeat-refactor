@@ -37,7 +37,6 @@ public class MemberController {
         log.info("member controller");
 
         return "members/register";
-
     }
 
     @PostMapping("/new")
@@ -125,8 +124,15 @@ public class MemberController {
 
     /**
      * 회원 탈퇴(삭제)
-     * TODO: view 구현 완료 후 EmailRequest -> User 로 변경하기
      */
+    @GetMapping("/delete")
+    public String deleteForm(@ModelAttribute EmailRequest emailRequest) {
+        log.info("member delete form controller");
+
+        return "members/delete";
+    }
+
+    /* TODO: view 구현 완료 후 EmailRequest -> User 로 변경하기 */
     @DeleteMapping("/delete")
     public ResponseEntity<String> delete(@RequestBody @Valid EmailRequest emailRequest) {
         log.info("member delete controller");
