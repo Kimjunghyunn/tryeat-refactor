@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"></head>
+
+<body>
+<!-- ======= Header ======= -->
+<header th:replace="fragments/body-header :: body-header" id="header" class="fixed-top d-flex align-items-center"></header>
+
+<!-- ======= Delete Section ======= -->
+<section class="common">
+  <div class="container">
+    <div class="form-delete">
+      <br>
+      <p>안녕하세요! 츄라잇 입니다😊</p>
+      <p>이곳은 회원 탈퇴 페이지 입니다.</p>
+      <p>탈퇴 전 사전방지를 위해 동의를 받고 있습니다.</p>
+      <p>아래의 버튼을 체크한 뒤 탈퇴를 진행해주세요.</p>
+      <br>
+      <input id="del_checkbox" type="checkbox"> 츄라잇을 탈퇴 하시겠습니까? </input>
+      <div class="btn_wrap">
+        <button id="del_btn" class="btn btn-dark" type="button">탈퇴하기</button>
+      </div>
+    </div>
+  </div>
+</section> <!-- Home Delete -->
+
+<!-- ======= Footer ======= -->
+<footer th:replace="fragments/footer :: footer" id="footer"></footer>
+
+<!-- ======= Js ======= -->
+<script>
+    $("#del_btn").click(function() {
+      if($('#del_checkbox').is(':checked')){
+        $.ajax({
+          type   : "DELETE",
+          url    : "/members/delete",
+          success: function (result) {
+            let msg = '🐕 츄라잇에 탈퇴 되었습니다. 🐈\n';
+            msg += '🐕 다음에 또 만나요 🐈';
+            alert(msg);
+            location.href='/members/logout';
+          },
+          error  : function(jqXHR) {
+            alert(jqXHR.responseText);
+          }
+        });
+      } else {
+        alert("‼ 체크박스에 동의해주세요 ‼");
+      }
+    });
+</script>
+</body>
+</html>
