@@ -132,11 +132,10 @@ public class MemberController {
         return "members/delete";
     }
 
-    /* TODO: view 구현 완료 후 EmailRequest -> User 로 변경하기 */
     @DeleteMapping("/delete")
-    public ResponseEntity<String> delete(@RequestBody @Valid EmailRequest emailRequest) {
+    public ResponseEntity<String> delete(@AuthenticationPrincipal User user) {
         log.info("member delete controller");
-        memberFacade.delete(emailRequest.getEmail());
+        memberFacade.delete(user.getUsername());
 
         return new ResponseEntity<>(HttpStatus.OK); //200
     }
