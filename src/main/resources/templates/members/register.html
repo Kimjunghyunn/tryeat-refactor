@@ -105,21 +105,21 @@
           <tr>
             <th><span>이름</span></th>
             <td>
-              <input class="table_input" type="text" th:field="*{name}" placeholder="">
+              <input class="table_input" type="text" id="name" th:field="*{name}" placeholder="">
               <div class="field-error" th:errors="*{name}"></div>
             </td>
           </tr>
           <tr>
             <th><span>비밀번호</span></th>
             <td>
-              <input class="table_input" type="password" th:field="*{password1}" placeholder="비밀번호를 입력해주세요.">
+              <input class="table_input" type="password" id="password1" th:field="*{password1}" placeholder="비밀번호를 입력해주세요.">
               <div class="field-error" th:errors="*{password1}"></div>
             </td>
           </tr>
           <tr>
             <th><span>비밀번호 확인</span></th>
             <td>
-              <input class="table_input" type="password" th:field="*{password2}" placeholder="비밀번호를 확인하세요">
+              <input class="table_input" type="password" id="password2" th:field="*{password2}" placeholder="비밀번호를 확인하세요">
               <div class="field-error" th:errors="*{password2}"></div>
             </td>
           </tr>
@@ -140,7 +140,7 @@
           <tr>
             <th><span>휴대폰 번호</span></th>
             <td>
-              <input class="table_input" type="text" th:field="*{phone}" placeholder="ex) 01012341234">
+              <input class="table_input" type="text" id="phone" th:field="*{phone}" placeholder="ex) 01012341234">
               <div class="field-error" th:errors="*{phone}"></div>
             </td>
           </tr>
@@ -150,7 +150,7 @@
           <span>표시는 필수적으로 입력해주셔야 가입이 가능합니다.</span>
         </div>
         <div class="btn_wrap">
-          <button class="btn btn-dark" type="submit">가입하기</button>
+          <button id="check_join" class="btn btn-dark" type="button">가입하기</button>
         </div>
       </form> <!-- join_form E -->
     </div> <!-- form_txtInput E -->
@@ -161,6 +161,39 @@
 <footer th:replace="fragments/footer :: footer" id="footer"></footer>
 
 <script th:inline="javascript">
+  /** ====== join ====== **/
+  $("#check_join").click(function () {
+    let param = {
+      name : $("#name").val(),
+      email : $("#email").val(),
+      password1 : $("#password1").val(),
+      password2 : $("#password2").val(),
+      zipcode : $("#zipcode").val(),
+      street_address : $("#street_address").val(),
+      jibeon_address : $("#jibeon_address").val(),
+      detail_address : $("#detail_address").val(),
+      phone : $("#phone").val(),
+      emailAuth : $("#authNum_tf").val()
+    };
+    console.log(param);
+    console.log(JSON.stringify(param));
+
+    $.ajax({
+      type   : "POST",
+      url    : "/members/new",
+      contentType: 'application/json',
+      data   : JSON.stringify(param),
+      success: function (result) {
+        alert('🐕 회원가입이 완료 되었습니다. 🐈');
+        location.href='/';
+      },
+      error  : function(jqXHR) {
+        alert(jqXHR.responseText);
+        location.href='/members/new';
+      }
+    });
+  });
+
   /** ====== Email Auth ====== **/
   let resultAuthNum = 0; //인증번호 저장 전역변수
 
@@ -184,7 +217,7 @@
         alert(msg);
       },
       error  : function(jqXHR) {
-        alert(jqXHR.responseText);
+        alert('📩 이메일을 입력해주세요.');
       }
     });
   });
