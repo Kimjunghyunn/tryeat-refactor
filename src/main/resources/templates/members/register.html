@@ -150,7 +150,7 @@
           <span>표시는 필수적으로 입력해주셔야 가입이 가능합니다.</span>
         </div>
         <div class="btn_wrap">
-          <button id="check_join" class="btn btn-dark" type="submit">가입하기</button>
+          <button id="check_join" class="btn btn-dark" type="button">가입하기</button>
         </div>
       </form> <!-- join_form E -->
     </div> <!-- form_txtInput E -->
@@ -172,9 +172,11 @@
       street_address : $("#street_address").val(),
       jibeon_address : $("#jibeon_address").val(),
       detail_address : $("#detail_address").val(),
-      phone : $("#phone").val()
+      phone : $("#phone").val(),
+      emailAuth : $("#authNum_tf").val()
     };
     console.log(param);
+    console.log(JSON.stringify(param));
 
     $.ajax({
       type   : "POST",
