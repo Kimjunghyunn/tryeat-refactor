@@ -118,9 +118,11 @@ public class MemberController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity editMember(@Valid @ModelAttribute("memberForm") MemberFormDto memberForm,
+    public @ResponseBody ResponseEntity editMember(@RequestBody @Valid MemberFormDto memberForm,
                              BindingResult bindingResult) {
         log.info("회원 수정으로 이동");
+        log.info(String.valueOf(memberForm));
+
         if (!memberForm.getPassword1().equals(memberForm.getPassword2())) {
             bindingResult.rejectValue("password2", "passwordInCorrect",
                     "비밀번호가 일치하지 않습니다.");
@@ -135,19 +137,18 @@ public class MemberController {
                 sb.append(error.getDefaultMessage());
 
             return new ResponseEntity<>(sb.toString(), HttpStatus.BAD_REQUEST);
+        } else {
+            memberFacade.update(memberForm);
+
+            URI location = UriComponentsBuilder.newInstance()
+                    .scheme("http")
+                    .path("tryeat.shop/members/update")
+                    .build()
+                    .toUri();
+
+            // 성공 시 201
+            return ResponseEntity.created(location).build();
         }
-
-        memberFacade.update(memberForm);
-
-        URI location = UriComponentsBuilder.newInstance()
-                .scheme("http")
-                .path("tryeat.shop/members/update")
-                .build()
-                .toUri();
-
-        // 성공 시 201
-        return ResponseEntity.created(location).build();
-
     }
 
     /**
