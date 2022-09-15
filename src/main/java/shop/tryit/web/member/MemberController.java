@@ -44,12 +44,12 @@ public class MemberController {
         return "members/register";
     }
 
+    @ResponseBody
     @PostMapping("/new")
-    public @ResponseBody ResponseEntity<String> newMember(@RequestBody @Valid MemberFormDto memberFormDto,
-                            BindingResult bindingResult) {
+    public ResponseEntity<String> newMember(@RequestBody @Valid MemberFormDto memberFormDto, BindingResult bindingResult) {
         log.info(String.valueOf(memberFormDto));
 
-        if (!memberFormDto.isEmailAuth()){
+        if (!memberFormDto.isEmailAuth()) {
             bindingResult.rejectValue("emailAuth", "emailAuthInCorrect",
                     "인증번호을 확인해주세요.");
         }
@@ -99,13 +99,11 @@ public class MemberController {
     @GetMapping("/login")
     public String loginForm() {
         log.info("member login controller");
-
         return "members/login-form";
-
     }
 
     /**
-     * 회원 프로필
+     * 회원 수정
      */
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/update")
@@ -114,13 +112,12 @@ public class MemberController {
         model.addAttribute("memberForm", memberFacade.updateForm(user));
 
         return "members/update";
-
     }
 
+    @ResponseBody
     @PutMapping("/update")
-    public @ResponseBody ResponseEntity editMember(@RequestBody @Valid MemberFormDto memberForm,
-                             BindingResult bindingResult) {
-        log.info("회원 수정으로 이동");
+    public ResponseEntity editMember(@RequestBody @Valid MemberFormDto memberForm, BindingResult bindingResult) {
+        log.info("member update-form controller");
         log.info(String.valueOf(memberForm));
 
         if (!memberForm.getPassword1().equals(memberForm.getPassword2())) {
@@ -130,7 +127,7 @@ public class MemberController {
 
         // 검증 실패시 400
         if (bindingResult.hasErrors()) {
-            log.info("member controller post");
+            log.info("member update controller");
             StringBuilder sb = new StringBuilder();
 
             for (FieldError error : bindingResult.getFieldErrors())
@@ -157,7 +154,6 @@ public class MemberController {
     @GetMapping("/delete")
     public String deleteForm(@ModelAttribute EmailRequest emailRequest) {
         log.info("member delete form controller");
-
         return "members/delete";
     }
 
@@ -166,7 +162,7 @@ public class MemberController {
         log.info("member delete controller");
         memberFacade.delete(user.getUsername());
 
-        return new ResponseEntity<>(HttpStatus.OK); //200
+        // 성공 시 200
+        return new ResponseEntity<>(HttpStatus.OK);
     }
-
 }

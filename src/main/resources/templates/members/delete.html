@@ -29,25 +29,26 @@
 
 <!-- ======= Js ======= -->
 <script>
-    $("#del_btn").click(function() {
-      if($('#del_checkbox').is(':checked')){
-        $.ajax({
-          type   : "DELETE",
-          url    : "/members/delete",
-          success: function (result) {
-            let msg = '🐕 츄라잇에 탈퇴 되었습니다. 🐈\n';
-            msg += '🐕 다음에 또 만나요 🐈';
-            alert(msg);
-            location.href='/members/logout';
-          },
-          error  : function(jqXHR) {
-            alert(jqXHR.responseText);
-          }
-        });
-      } else {
-        alert("‼ 체크박스에 동의해주세요 ‼");
-      }
-    });
+  $("#del_btn").click(function() {
+    if($('#del_checkbox').is(':checked')){
+      $.ajax({
+        type   : "DELETE",
+        url    : "/members/delete",
+        success: function (result) {
+          let msg = '🐕 츄라잇에 탈퇴 되었습니다. 🐈\n';
+          msg += '🐕 다음에 또 만나요 🐈';
+          alert(msg);
+          location.href='/members/logout';
+        },
+        error  : function(jqXHR) {
+          alert(jqXHR.responseText);
+        }
+      });
+    } else {
+      alert("‼ 체크박스에 동의해주세요 ‼");
+    }
+  });
+
 </script>
 </body>
 </html>
