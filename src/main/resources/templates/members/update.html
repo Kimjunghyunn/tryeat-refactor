@@ -89,28 +89,28 @@
           <tr>
             <th><span>아이디</span></th>
             <td>
-              <input class="table_input" type="email" th:field="*{email}" th:text="${email}" readonly>
+              <input class="table_input" type="email" id="email" th:field="*{email}" th:text="${email}" readonly>
               <div class="field-error" th:errors="*{email}"></div>
             </td>
           </tr>
           <tr>
             <th><span>이름</span></th>
             <td>
-              <input class="table_input" type="text" th:field="*{name}" th:text="${name}">
+              <input class="table_input" type="text" id="name" th:field="*{name}" th:text="${name}">
               <div class="field-error" th:errors="*{name}"></div>
             </td>
           </tr>
           <tr>
             <th><span>비밀번호</span></th>
             <td>
-              <input class="table_input" type="password" th:field="*{password1}" placeholder="비밀번호를 입력해주세요.">
+              <input class="table_input" type="password" id="password1" th:field="*{password1}" placeholder="비밀번호를 입력해주세요.">
               <div class="field-error" th:errors="*{password1}"></div>
             </td>
           </tr>
           <tr>
             <th><span>비밀번호 확인</span></th>
             <td>
-              <input class="table_input" type="password" th:field="*{password2}" placeholder="비밀번호를 확인하세요">
+              <input class="table_input" type="password" id="password2" th:field="*{password2}" placeholder="비밀번호를 확인하세요">
               <div class="field-error" th:errors="*{password2}"></div>
             </td>
           </tr>
@@ -150,7 +150,7 @@
           </tr>
           <tr>
             <th><span>휴대폰 번호</span></th>
-            <td><input class="table_input" type="text" th:text="${phone}" th:field="*{phone}" placeholder=""></td>
+            <td><input class="table_input" type="text" id="phone" th:text="${phone}" th:field="*{phone}" placeholder=""></td>
           </tr>
           </tbody>
         </table>
@@ -158,7 +158,7 @@
           <span>표시는 필수적으로 입력해주셔야 수정이 가능합니다.</span>
         </div>
         <div class="btn_wrap">
-          <button class="btn btn-dark" type="submit">회원 수정</button>
+          <button id="check_update" class="btn btn-dark" type="button">회원 수정</button>
         </div>
       </form> <!-- join_form E -->
     </div> <!-- form_txtInput E -->
@@ -168,5 +168,39 @@
 <!-- ======= Footer ======= -->
 <footer th:replace="fragments/footer :: footer" id="footer"></footer>
 
+<!-- ======= js ======= -->
+<script th:inline="javascript">
+  /** ====== join ====== **/
+  $("#check_update").click(function () {
+    let param = {
+      name : $("#name").val(),
+      email : $("#email").val(),
+      password1 : $("#password1").val(),
+      password2 : $("#password2").val(),
+      zipcode : $("#zipcode").val(),
+      street_address : $("#street_address").val(),
+      jibeon_address : $("#jibeon_address").val(),
+      detail_address : $("#detail_address").val(),
+      phone : $("#phone").val(),
+    };
+    console.log(param);
+    console.log(JSON.stringify(param));
+
+    $.ajax({
+      type   : "PUT",
+      url    : "/members/update",
+      contentType: 'application/json',
+      data   : JSON.stringify(param),
+      success: function (result) {
+        alert('🐕 회원 수정이 완료 되었습니다. 🐈');
+        location.href='/members/update';
+      },
+      error  : function(jqXHR) {
+        alert(jqXHR.responseText);
+        location.href='/members/update';
+      }
+    });
+  });
+</script>
 </body>
 </html>
